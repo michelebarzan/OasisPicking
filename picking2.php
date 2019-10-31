@@ -12,6 +12,32 @@ include "Session.php";
 			<script type="text/javascript" src="js/picking.js"></script>
 			<script src="https://kit.fontawesome.com/4462bc49a0.js"></script>
 			<script type="text/javascript">
+				function updateGruppo(gruppo,id_picking)
+				{
+					$.get("updateGruppo.php",
+					{
+						gruppo,
+						id_picking
+					},
+					function(response, status)
+					{
+						if(status=="success")
+						{
+							if(response.indexOf("error")>-1 || response.indexOf("notice")>-1 || response.indexOf("warning")>-1)
+							{
+								Swal.fire
+								({
+									type: 'error',
+									title: 'Errore',
+									text: "Se il problema persiste contatta l' amministratore"
+								});
+								console.log(response);
+							}
+						}
+						else
+							console.log(status);
+					});
+				}
 				 function FocusOnInput()
 				 {
 					 document.getElementById("codice1").focus();
@@ -906,7 +932,7 @@ function riempiTabella($conn,$N_Pick)
 				echo "</select>";
 			}
 			echo '</td>';
-			echo '<td>'.$rowRighe['gruppo'].'</td>';
+			echo '<td><input style="height:25px;width:40px;text-align:center" type="number" onfocusout="updateGruppo(this.value,'.$rowRighe['id_picking'].')" value="'.$rowRighe['gruppo'].'"></td>';
 			echo '<td>'.$rowRighe['descrPick'].'</td>';
 			echo '<td>'.$rowRighe['n_Pick'].'</td>';
 			echo '<td>'.$rowRighe['docNum'].'</td>';
