@@ -9,10 +9,13 @@ session_start();
 		<title>Picking</title>
 		<link rel="stylesheet" href="css/stylePicking.css" />
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+		<link rel="stylesheet" href="css/cercaOrdine.css" />
 		<link rel="stylesheet" href="js_libraries/spinners/spinner.css" />
 		<script src="js_libraries/spinners/spinner.js"></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+		<script type="text/javascript" src="js/picking.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+		<script src="https://kit.fontawesome.com/4462bc49a0.js"></script>
 		<script type="text/javascript">
 		function FocusOnInput()
 		{
@@ -99,6 +102,7 @@ session_start();
 					<div id="codice" class="codice">
 						<form action="checkCodice.php" method="POST">
 							<input type="text" id="codice3" name="codice3" placeholder="Spara un codice pick" required/>
+							<button type="button" onclick="apriPopupCercaOrdine()" class="btnCercaOrdinePicking">Cerca ordine</button>
 						</form>
 					</div>
 					<div id="immagine">

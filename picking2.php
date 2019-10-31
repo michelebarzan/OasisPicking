@@ -5,8 +5,12 @@ include "Session.php";
 	<head>
 		<title>Picking</title>
 			<link rel="stylesheet" href="css/stylePicking.css" />
+			<link rel="stylesheet" href="css/cercaOrdine.css" />
+			<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 			<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+			<script type="text/javascript" src="js/picking.js"></script>
+			<script src="https://kit.fontawesome.com/4462bc49a0.js"></script>
 			<script type="text/javascript">
 				 function FocusOnInput()
 				 {
@@ -285,7 +289,7 @@ include "Session.php";
 					<div id="codice" class="codice">
 						<form action="picking2.php" method="POST" name="formCodice1" id="formCodice1">
 							<input type="text" id="codice1" name="codice1" placeholder="Spara un codice" onkeypress="process(event, this);" required/>
-							
+							<button type="button" onclick="apriPopupCercaOrdine()" class="btnCercaOrdinePicking">Cerca ordine</button>
 							<select name='codice1' id='Scodice1' onchange='document.formCodice1.submit()' >
 								<?php
 								if($codice>9 && $codice<9999 && is_numeric($codice))

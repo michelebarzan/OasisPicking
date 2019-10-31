@@ -1,0 +1,178 @@
+.btnCercaOrdinePicking
+{
+    width:130px;
+    float:right;
+    display:block;
+    height:40px;
+    border:none;
+    background-color:#EBEBEB;
+    border:1px solid #ddd;
+    margin-top:30px;
+    outline:none;
+    cursor:pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    font-family:sans-serif;
+    font-size:16px;
+    color:gray;
+    font-weight:bold;
+}
+.btnCercaOrdinePicking:hover
+{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.formRicercaOrdineInputContainer
+{
+    width:100%;
+    float:left;
+    display: block;
+    min-height:40px;
+    height: auto;
+    line-height: 40px;
+    box-sizing: border-box;
+    padding-top:5px;
+    padding-bottom: 5px;
+}
+.formRicercaOrdineInputLabel
+{
+    float:left;
+    display: block;
+    height:30px;
+    line-height: 30px;
+    width:150px;
+    box-sizing: border-box;
+    text-align: left;
+    padding-left:20px;
+    font-family: 'Montserrat',sans-serif;
+    font-size:12px;
+}
+.formRicercaOrdineInput
+{
+    float:left;
+    display: block;
+    width:calc(100% - 230px);
+    margin-left:20px;
+    margin-right: 10px;
+    height: 30px;
+    min-height: 30px;
+    font-family: 'Montserrat',sans-serif;
+    font-size:12px;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border: 1px solid #bbb;
+    padding-left:5px;
+}
+.formRicercaOrdineInput:hover
+{
+    border: 1px solid gray;
+}
+textarea.formRicercaOrdineInput
+{
+    resize: vertical;
+}
+.formRicercaOrdineIconButton
+{
+    height:30px;
+    width:30px;
+    float:left;
+    display: block;
+    margin-right: 20px;
+    outline:none;
+    border:none;
+    background-color: #fff;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border-radius: 2px;
+    border: 1px solid #bbb;
+    cursor: pointer;
+}
+.formRicercaOrdineIconButton:hover
+{
+    border: 1px solid gray;
+}
+#formRicercaOrdineInfoPickContainer
+{
+    width:100%;
+    float:left;
+    display: block;
+    box-sizing: border-box;
+    padding-top:10px;
+    padding-bottom: 5px;
+    font-family: 'Montserrat',sans-serif;
+    font-size:12px;
+    text-align: left;
+}
+#formRicercaOrdineInfoPickContainer u
+{
+    margin-left: 20px;
+}
+#formRicercaOrdineInfoPickContainer div
+{
+    width:100%;
+    box-sizing:border-box;
+    float:left;
+    display: block;
+    margin-bottom:10px;
+    padding-left: 20px;
+    font-weight: bold;
+    color:#2b586f;
+    font-family: 'Montserrat',sans-serif;
+    font-size:14px;
+}
+#formRicercaOrdineInfoOrdineContainer
+{
+    width:100%;
+    float:left;
+    display: block;
+    box-sizing: border-box;
+    padding-top:10px;
+    padding-bottom: 5px;
+    font-family: 'Montserrat',sans-serif;
+    font-size:12px;
+    text-align: left;
+}
+#formRicercaOrdineInfoOrdineContainer div
+{
+    width:100%;
+    box-sizing:border-box;
+    float:left;
+    display: block;
+    padding-left: 20px;
+    margin-bottom: 5px;
+    margin-top:5px;
+    font-weight: bold;
+    color:#2b586f;
+    font-family: 'Montserrat',sans-serif;
+    font-size:14px;
+}
+#formRicercaOrdineInfoOrdineContainer table
+{
+    width:calc(100% - 40px);
+    border-collapse: collapse;
+    margin-left:20px;
+    float:left;
+    display: block;
+}
+#formRicercaOrdineInfoOrdineContainer table th
+{
+    font-family: 'Montserrat',sans-serif;
+    font-size:12px;
+    color:black;
+    text-align: left;
+    border-bottom:1px solid #aaa;
+    border-top:1px solid #aaa;
+    padding:5px;
+}
+#formRicercaOrdineInfoOrdineContainer table td
+{
+    font-family: 'Montserrat',sans-serif;
+    font-size:12px;
+    color:gray;
+    text-align: left;
+    border-bottom:1px solid #ccc;
+    padding-left:5px;
+    padding-right:5px;
+}
+#formRicercaOrdineInfoOrdineContainer table tr:hover
+{
+    background-color: #ddd;
+}
