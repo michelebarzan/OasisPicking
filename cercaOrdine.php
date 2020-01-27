@@ -43,23 +43,51 @@
         $result3=sqlsrv_query($conn,$query3);
         if($result3==TRUE)
         {
-            while($row3=sqlsrv_fetch_array($result3))
-            {
-                if($infoPick["n_Pick"]==null)
-                {
-                    $infoPick["n_Pick"]=$row3['N_Pick'];
-                    $infoPick["descrPick"]=$row3['DescrPick'];
-                    $infoPick["dataConsegna"]=$row3['DataConsegna']->format('d/m/Y');
-                    $infoPick["dataPick"]=$row3['DataPick']->format('d/m/Y');
-                }
-                $infoOrdine["docNum"]=$row3['DocNum'];
-                $infoOrdine["lineNum"]=$row3['N_Riga'];
-                $infoOrdine["itemCode"]=$row3['ItemCode'];
-                $infoOrdine["dscription"]=$row3['Dscription'];
-                $infoOrdine["misure"]=$row3['Misure'];
-    
-                array_push($righeOrdine,$infoOrdine);
-            }
+			$rows = sqlsrv_has_rows( $result3 );
+			if ($rows === true)
+			{
+				while($row3=sqlsrv_fetch_array($result3))
+				{
+					if($infoPick["n_Pick"]==null)
+					{
+						$infoPick["n_Pick"]=$row3['N_Pick'];
+						$infoPick["descrPick"]=$row3['DescrPick'];
+						$infoPick["dataConsegna"]=$row3['DataConsegna']->format('d/m/Y');
+						$infoPick["dataPick"]=$row3['DataPick']->format('d/m/Y');
+					}
+					$infoOrdine["docNum"]=$row3['DocNum'];
+					$infoOrdine["lineNum"]=$row3['N_Riga'];
+					$infoOrdine["itemCode"]=$row3['ItemCode'];
+					$infoOrdine["dscription"]=$row3['Dscription'];
+					$infoOrdine["misure"]=$row3['Misure'];
+
+					array_push($righeOrdine,$infoOrdine);
+				}
+			}
+			else 
+			{
+				$query4="SELECT ORDINE AS docNum, NUM AS lineNum, CODE AS itemCode, DESC1 AS dscription, DESCMIS AS misure FROM dbo.elenco_colli WHERE (ORDINE = $ordine)";	
+				$result4=sqlsrv_query($conn,$query4);
+				if($result4==TRUE)
+				{
+					while($row4=sqlsrv_fetch_array($result4))
+					{
+						$infoPick["n_Pick"]="";
+						$infoPick["descrPick"]="";
+						$infoPick["dataConsegna"]="";
+						$infoPick["dataPick"]="";
+						$infoOrdine["docNum"]=$row4['docNum'];
+						$infoOrdine["lineNum"]=$row4['lineNum'];
+						$infoOrdine["itemCode"]=$row4['itemCode'];
+						$infoOrdine["dscription"]=$row4['dscription'];
+						$infoOrdine["misure"]=$row4['misure'];
+
+						array_push($righeOrdine,$infoOrdine);
+					}
+				}
+				else
+					die("error");
+			}
         }
         else
             die("error");

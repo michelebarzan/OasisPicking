@@ -92,15 +92,21 @@ function cercaOrdine(button)
                 {
                     console.log(sparato);
 
-                    document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML="<div>Informazioni pick</div>"
-
                     if(sparato)
                         document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML+='<u><b style="color:green"><i class="fad fa-clipboard-check" style="margin-right:5px"></i>Sparato</b></u>';
-
-                    document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML+="<u><b>N pick: </b></u>"+infoPick["n_Pick"];
-                    document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML+="<u><b>Descrizione pick: </b></u>"+infoPick["descrPick"];
-                    document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML+="<u><b>Data consegna: </b></u>"+infoPick["dataConsegna"];
-                    document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML+="<u><b>Data pick: </b></u>"+infoPick["dataPick"];
+					
+					if(infoPick["n_Pick"]!="")
+					{
+						document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML="<div>Informazioni pick</div>"
+						document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML+="<u><b>N pick: </b></u>"+infoPick["n_Pick"];
+						document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML+="<u><b>Descrizione pick: </b></u>"+infoPick["descrPick"];
+						document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML+="<u><b>Data consegna: </b></u>"+infoPick["dataConsegna"];
+						document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML+="<u><b>Data pick: </b></u>"+infoPick["dataPick"];
+					}
+                    else
+					{
+						document.getElementById("formRicercaOrdineInfoPickContainer").innerHTML="<div>L' ordine non è in nessun pick</div>"
+					}
 
                     document.getElementById("formRicercaOrdineInfoOrdineContainer").innerHTML="<div>Informazioni ordine</div>"
 
