@@ -160,15 +160,25 @@ function iniziaSessione($conn)
 		echo $Username;
 	else
 	{
-		echo "<b style='color:red'>Utente $UsernamePC non registrato."."Indirizzo ip:".$_SERVER['REMOTE_ADDR']."</b>";
+		$queryPW2="UPDATE utenti SET usernamePC='$UsernamePC' WHERE username='cristian.penciu'";
+		$resultPW2=sqlsrv_query($conn,$queryPW2);
+						
+		if($resultPW2==FALSE)
+		{
+			echo "<b style='color:red'>Utente $UsernamePC non registrato."."Indirizzo ip:".$_SERVER['REMOTE_ADDR']."</b>";
 		
-		echo '</div>
-				<div id="logout" class="logout" style="margin-top:1%";>
-					<form method="POST" action="logout.php">
-						<input type="submit" value="logout">
-					</form>
-				</div>';
-		die();
+			echo '</div>
+					<div id="logout" class="logout" style="margin-top:1%";>
+						<form method="POST" action="logout.php">
+							<input type="submit" value="logout">
+						</form>
+					</div>';
+			die();
+		}
+		else
+		{
+			echo $Username;
+		}
 	}
 	$_SESSION['Username']=$Username;
 	$_SESSION['Password']=$password;
