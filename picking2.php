@@ -513,8 +513,9 @@ include "Session.php";
 						case $codice=="SI":
 						if(isset($_SESSION['N_Pick']))
 						{
+							$id_utente=getIdUtente($_SESSION['Username']);
 							$N_Pick=$_SESSION['N_Pick'];
-							$qChiudi="UPDATE T_Picking_01 SET chiuso='V',dataChiusura='".date('m/d/Y h:i:s', time())."' WHERE n_Pick=$N_Pick AND NOT(bancale IS NULL) AND NOT(gruppo IS NULL)";
+							$qChiudi="UPDATE T_Picking_01 SET chiuso='V',dataChiusura='".date('m/d/Y h:i:s', time())."',utenteChiusura=$id_utente WHERE n_Pick=$N_Pick AND NOT(bancale IS NULL) AND NOT(gruppo IS NULL)";
 							$rChiudi=sqlsrv_query($conn,$qChiudi);
 							if($rChiudi==FALSE)
 							{
@@ -1416,7 +1417,8 @@ function nAperti($conn,$N_Pick)
 	}
 	if($nAperti==0)
 	{
-		$q2="UPDATE T_Picking_01 SET chiuso='V',dataChiusura='".date('m/d/Y h:i:s', time())."' WHERE n_Pick=$N_Pick";
+		$id_utente=getIdUtente($_SESSION['Username']);
+		$q2="UPDATE T_Picking_01 SET chiuso='V',dataChiusura='".date('m/d/Y h:i:s', time())."',utenteChiusura=$id_utente WHERE n_Pick=$N_Pick";
 		$r2=sqlsrv_query($conn,$q2);
 		if($r2==FALSE)
 		{
@@ -1539,6 +1541,23 @@ function getGruppoMax($conn,$N_Pick)
 		while($row2=sqlsrv_fetch_array($r2))
 		{
 			return $row2['gruppoMax'];
+		}
+	}
+}
+function getIdUtente($conn,$username) 
+{
+	$q="SELECT id_utente FROM utenti WHERE username='$username'";
+	$r=sqlsrv_query($conn,$q);
+	if($r==FALSE)
+	{
+		echo "<br><br>Errore esecuzione query<br>Query: ".$q."<br>Errore: ";
+		die(print_r(sqlsrv_errors(),TRUE));
+	}
+	else
+	{
+		while($row=sqlsrv_fetch_array($r))
+		{
+			return $row['id_utente'];
 		}
 	}
 }
