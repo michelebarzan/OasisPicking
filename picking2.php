@@ -513,7 +513,7 @@ include "Session.php";
 						case $codice=="SI":
 						if(isset($_SESSION['N_Pick']))
 						{
-							$id_utente=getIdUtente($_SESSION['Username']);
+							$id_utente=getIdUtente($conn,$_SESSION['Username']);
 							$N_Pick=$_SESSION['N_Pick'];
 							$qChiudi="UPDATE T_Picking_01 SET chiuso='V',dataChiusura='".date('m/d/Y h:i:s', time())."',utenteChiusura=$id_utente WHERE n_Pick=$N_Pick AND NOT(bancale IS NULL) AND NOT(gruppo IS NULL)";
 							$rChiudi=sqlsrv_query($conn,$qChiudi);
@@ -1417,7 +1417,7 @@ function nAperti($conn,$N_Pick)
 	}
 	if($nAperti==0)
 	{
-		$id_utente=getIdUtente($_SESSION['Username']);
+		$id_utente=getIdUtente($conn,$_SESSION['Username']);
 		$q2="UPDATE T_Picking_01 SET chiuso='V',dataChiusura='".date('m/d/Y h:i:s', time())."',utenteChiusura=$id_utente WHERE n_Pick=$N_Pick";
 		$r2=sqlsrv_query($conn,$q2);
 		if($r2==FALSE)
