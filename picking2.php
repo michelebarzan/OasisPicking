@@ -204,6 +204,19 @@ include "Session.php";
 						}
 					});
 				}
+				function cleanTmpUtentiPick()
+				{
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() 
+					{
+						if (this.readyState == 4 && this.status == 200) 
+						{
+							console.log(this.responseText)
+						}
+					};
+					xmlhttp.open("POST", "cleanTmpUtentiPick.php?", true);
+					xmlhttp.send();
+				}
 			</script>
 			<style>
 				#nBancaliMultiBancale
@@ -259,7 +272,7 @@ include "Session.php";
 				}
 			 </style>
 	</head>
-	<body onload="FocusOnInput()">
+	<body onload="FocusOnInput()" onbeforeunload="cleanTmpUtentiPick()">
 		<div id="container">
 			<div id="header">
 				<div id="user">
@@ -378,35 +391,60 @@ include "Session.php";
 								$_SESSION['N_Pick']=$codice;
 								annulla($conn);
 							}*/
-							$N_Pick=$codice; 
-							inserisciN_Pick($conn,$N_Pick);
-							//INSERISCI NELLA TABELLA
-							$_SESSION['N_Pick']=$N_Pick;
-							$qDatiIntestazione="SELECT descrPick FROM T_Picking_01 WHERE n_Pick=$N_Pick";
-							$descrPick=NULL;
-							$rDatiIntestazione=sqlsrv_query($conn,$qDatiIntestazione);
-							if($rDatiIntestazione==FALSE)
+
+							$id_utente=getIdUtente($conn,$_SESSION['Username']);
+
+							$stmt = sqlsrv_query( $conn, "DELETE FROM tmp_utenti_pick WHERE utente = $id_utente");
+							if(!$stmt)
+								die("error1 -- ".print_r(sqlsrv_errors(),TRUE)." -- ".gethostbyaddr($_SERVER['REMOTE_ADDR']));
+
+							$N_Pick=$codice;
+
+							$id_utente=getIdUtente($conn,$_SESSION['Username']);
+							$stmt = sqlsrv_query( $conn, "SELECT * FROM tmp_utenti_pick WHERE utente<>$id_utente AND n_Pick='$N_Pick'");
+							if ($stmt)
 							{
-								echo "<br><br>Errore esecuzione query<br>Query: ".$qDatiIntestazione."<br>Errore: ";
-								die(print_r(sqlsrv_errors(),TRUE));
-							}
-							else
-							{
-								while($rowDatiIntestazione=sqlsrv_fetch_array($rDatiIntestazione))
+								$rows = sqlsrv_has_rows( $stmt );
+								if ($rows === true)
 								{
-									$descrPick=$rowDatiIntestazione['descrPick'];
-									$_SESSION['descrPick']=$descrPick;
+									echo '<div style="position:absolute;height:100%;width:100%;background-color:rgba(0,0,0,0.7);left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:22px;font-family:sans-serif;">Un altro utente sta lavorando sul pick '.$N_Pick.'<br><br>Spara un altro Pick</span></div>';
+								}
+								else 
+								{
+									$stmt = sqlsrv_query( $conn, "INSERT INTO tmp_utenti_pick (utente,n_Pick) VALUES ($id_utente,'$N_Pick')");
+									if(!$stmt)
+										die("error2 -- ".print_r(sqlsrv_errors(),TRUE));
+
+									inserisciN_Pick($conn,$N_Pick);
+									//INSERISCI NELLA TABELLA
+									$_SESSION['N_Pick']=$N_Pick;
+									$qDatiIntestazione="SELECT descrPick FROM T_Picking_01 WHERE n_Pick=$N_Pick";
+									$descrPick=NULL;
+									$rDatiIntestazione=sqlsrv_query($conn,$qDatiIntestazione);
+									if($rDatiIntestazione==FALSE)
+									{
+										echo "<br><br>Errore esecuzione query<br>Query: ".$qDatiIntestazione."<br>Errore: ";
+										die(print_r(sqlsrv_errors(),TRUE));
+									}
+									else
+									{
+										while($rowDatiIntestazione=sqlsrv_fetch_array($rDatiIntestazione))
+										{
+											$descrPick=$rowDatiIntestazione['descrPick'];
+											$_SESSION['descrPick']=$descrPick;
+										}
+									}
+									echo "<br>";
+									echo "<div style='font-family:arial;font-size:120%;color:#66B2FF;font-weight:bold;'>
+											<span style='color:gray;'>N_Pick:&nbsp</span>$N_Pick&nbsp&nbsp
+											<span style='color:gray;'><b style='color:black; font-size:170%'>|</b>&nbsp&nbspDestinatario:&nbsp</span>$descrPick&nbsp&nbsp
+											<span style='color:gray;'><b style='color:black; font-size:170%'>|</b>&nbsp&nbspNumero pallet:&nbsp</span>".calcolaNBancali($conn)."";
+									echo "</div>";
+									echo "<br>";
+									
+									creaEriempiTabella($conn,$N_Pick);
 								}
 							}
-							echo "<br>";
-							echo "<div style='font-family:arial;font-size:120%;color:#66B2FF;font-weight:bold;'>
-									<span style='color:gray;'>N_Pick:&nbsp</span>$N_Pick&nbsp&nbsp
-									<span style='color:gray;'><b style='color:black; font-size:170%'>|</b>&nbsp&nbspDestinatario:&nbsp</span>$descrPick&nbsp&nbsp
-									<span style='color:gray;'><b style='color:black; font-size:170%'>|</b>&nbsp&nbspNumero pallet:&nbsp</span>".calcolaNBancali($conn)."";
-							echo "</div>";
-							echo "<br>";
-							
-							creaEriempiTabella($conn,$N_Pick);
 							break;
 						//-----------------------------------------------------------------------------------------------------------------------------
 						case "ANNULLA": 
@@ -498,6 +536,9 @@ include "Session.php";
 							if(isset($_SESSION['N_Pick']))
 							{
 								$N_Pick=$_SESSION['N_Pick'];
+								$stmt = sqlsrv_query( $conn, "DELETE FROM tmp_utenti_pick WHERE utente = $id_utente");
+								if(!$stmt)
+									die("error3 -- ".print_r(sqlsrv_errors(),TRUE));
 								if(nAperti($conn,$N_Pick)>0)
 								{
 									echo "<br><br><b id='flash' class='flash'>Alcuni colli non sono stati assegnati ad un bancale. Vuoi proseguire comunque e chiudere quelli assegnati? (Si/No)</b>";
